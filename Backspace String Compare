@@ -1,0 +1,53 @@
+typedef struct stack {
+    char items[200];
+    int top;
+} stack;
+
+void init(stack *a){
+    a->top = -1;
+}
+
+void push(stack* b, char a) {
+    b->items[++(b->top)] = a;
+}
+
+void pop(stack* b) {
+    if (b->top >= 0) {
+        --(b->top);
+    }
+}
+
+bool backspaceCompare(char* s, char* t) {
+    stack s1, s2;
+    init(&s1);
+    init(&s2);
+  
+    for (int i = 0; i < strlen(s); ++i) {
+        if (s[i] == '#') {
+            pop(&s1); 
+        } else {
+            push(&s1, s[i]);
+        }
+    }
+
+  
+    for (int i = 0; i < strlen(t); ++i) {
+        if (t[i] == '#') {
+            pop(&s2); 
+        } else {
+            push(&s2, t[i]);
+        }
+    }
+
+    if (s1.top != s2.top) {
+        return false;
+    }
+
+    for (int i = 0; i <= s1.top; ++i) {
+        if (s1.items[i] != s2.items[i]) {
+            return false;
+        }
+    }
+
+    return true;
+}
