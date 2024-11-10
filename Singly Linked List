@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtHead(struct Node** head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = *head;
+    *head = newNode;
+}
+
+void insertAtTail(struct Node** head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+    
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        struct Node* temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void insertAtPosition(struct Node** head, int value, int position) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    
+    if (position == 1) {
+        newNode->next = *head;
+        *head = newNode;
+        return;
+    }
+    
+    struct Node* temp = *head;
+    for (int i = 1; temp != NULL && i < position - 1; i++) {
+        temp = temp->next;
+    }
+    
+    if (temp == NULL) {
+        printf("Position out of range\n");
+        return;
+    }
+    
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+
+void display(struct Node* head) {
+    if (head == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    
+    struct Node* temp = head;
+    printf("List: ");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    
+    insertAtHead(&head, 10);
+    insertAtTail(&head, 20);
+    insertAtPosition(&head, 15, 2);
+    insertAtTail(&head, 25);
+    insertAtPosition(&head, 5, 1);
+    
+    display(head);
+    
+    return 0;
+}
